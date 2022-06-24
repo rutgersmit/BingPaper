@@ -84,16 +84,6 @@ namespace BingPaper
 			this.Close();
 		}
 
-		private void buttonCancel_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
-
-		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			GetWallpapers(comboBox1.Text);
-		}
-
 		private void ShowBingImage(int index)
 		{
 			if (index < 0 || index > bingImages.Count - 1)
@@ -141,9 +131,28 @@ namespace BingPaper
 			return Encoding.UTF8.GetString(data);
 		}
 
-	}
+        private void button1_Click(object sender, EventArgs e)
+        {
 
-	internal class BingImage
+			var path = System.IO.Path.GetTempPath() + "\\bingwallpaper.jpg";
+			if (File.Exists(path))
+			{
+				using (var fbd = new OpenFileDialog())
+				//using (var fbd = new FolderBrowserDialog())
+				{
+					fbd.Filter = "JPEG files|*.jpg";
+					fbd.FileName = DateTime.Now.ToString("yyyy.MM.dd") + ".jpg";
+					DialogResult result = fbd.ShowDialog();
+
+					if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.FileName))
+						File.Copy(path, fbd.FileName, true);
+				}
+			}
+
+		}
+    }
+
+    internal class BingImage
 	{
 		public string Copyright { get; set; }
 		public string ImageUrl { get; set; }
